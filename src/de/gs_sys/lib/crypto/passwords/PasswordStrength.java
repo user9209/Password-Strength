@@ -18,14 +18,27 @@ public class PasswordStrength {
 	 */
     public static void main(String[] args) {
 
-        String pw = "AZaz09!#446d4gd56fgd";
+        String password = "AZaz09!#446d4gd56fgd";
+        // String password = "AZaz0946d4gd56fgd";
 
-        Complexity c = complexity(pw);
+        Complexity c = complexity(password);
 
         System.out.println(c);
 
-        System.out.println(Arrays.toString(passwordToBytes(pw, c)));
+        byte[] pw = passwordToBytes(password, c);
+        System.out.println(Arrays.toString(pw));
 
+        System.out.println();
+        System.out.println("Filled " + ((pw.length * 8) - c.getBit()) + " bit.");
+        if(c.hasSpecialchars()) {
+            System.out.println("As special chars involved, this number can be very high as each char waste 0.7 bit.");
+            System.out.println("Here ~ " + (int) (c.getLength() * 0.7d) + " bits");
+            System.out.println("Without special chars only 0.05 bit wasted.");
+        }
+        else {
+            System.out.println("Without special chars only 0.05 bit wasted for each char.");
+        }
+        System.out.println("May be filled up to 7 bits once.");
 
         /*
             // ~128 bit
@@ -76,8 +89,12 @@ public class PasswordStrength {
             return new Complexity();
         }
 
-        System.out.print(chars + " chars ^ " + password.length() + " length \u2248 ");
-        System.out.println(bitStrength(chars,password.length()) + " bit");
+        complexity.setCharsetSize(chars);
+        complexity.setLength(password.length());
+        complexity.setBit(bitStrength(chars,complexity.getLength()));
+
+        System.out.print(chars + " chars ^ " + complexity.getLength() + " length \u2248 ");
+        System.out.println(complexity.getBit() + " bit");
 
         return complexity;
     }
@@ -90,6 +107,8 @@ public class PasswordStrength {
     private static byte[] passwordToBytes(String password, Complexity complexity) {
         char[] pw = password.toCharArray();
         int[] out = new int[pw.length]; // todo: size
+
+        int neededBits = complexity.hasSpecialchars() ? 7 : 6;
 
         StringBuilder sb = new StringBuilder();
 
@@ -117,13 +136,11 @@ public class PasswordStrength {
             }
 
             String t = BigInteger.valueOf(out[i]).toString(2);
-            for (int j = 0; j < 7 - t.length(); j++) { // need 7 bits
+            for (int j = 0; j < neededBits - t.length(); j++) { // need 7 bits
                 sb.append(0);
             }
             sb.append(t);
         }
-
-
 
         int l = sb.length();
 
@@ -141,7 +158,7 @@ public class PasswordStrength {
 
         // would trim all leading zeros so see leading one
         byte[] num = new BigInteger(fillSB.toString() + sb.toString(),2).toByteArray();
-        
+
         // trim the one
         byte[] outB = new byte[num.length - 1];
         System.arraycopy(num,1,outB,0,outB.length);

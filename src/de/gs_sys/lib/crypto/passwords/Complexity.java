@@ -10,6 +10,9 @@ public class Complexity {
     public static final String SPECIALCHARS = "!$%&/()=?-_@+*.:#";
     public static final String SPECIALCHARS_REGEX = "!$%&/()=?\\-_@+*.:#";
 
+    private int bit = -1;
+    private int length = -1;
+    private int charsetSize = -1;
     private boolean uppercase = false;
     private boolean lowercase = false;
     private boolean numbers = false;
@@ -64,5 +67,46 @@ public class Complexity {
                 ", numbers=" + offsetNumbers() +
                 ", specialchars=" + offsetSpecialchars() +
                 '}';
+    }
+
+
+    public int getBit() {
+        return bit;
+    }
+
+    public void setBit(int bit) {
+        this.bit = bit;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public int getCharsetSize() {
+        return charsetSize;
+    }
+
+    public void setCharsetSize(int charsetSize) {
+        this.charsetSize = charsetSize;
+    }
+
+    public boolean hasUppercase() {
+        return uppercase;
+    }
+
+    public boolean hasLowercase() {
+        return lowercase;
+    }
+
+    public boolean hasNumbers() {
+        return numbers;
+    }
+
+    public boolean hasSpecialchars() {
+        return specialchars;
     }
 }
