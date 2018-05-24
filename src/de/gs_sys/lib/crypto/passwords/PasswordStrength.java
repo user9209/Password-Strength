@@ -1,6 +1,7 @@
 package de.gs_sys.lib.crypto.passwords;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 
 import static de.gs_sys.lib.crypto.passwords.Complexity.SPECIALCHARS;
 import static de.gs_sys.lib.crypto.passwords.Complexity.SPECIALCHARS_REGEX;
@@ -23,7 +24,7 @@ public class PasswordStrength {
 
         System.out.println(c);
 
-        //passwordToBytes(pw, c);
+        System.out.println(Arrays.toString(passwordToBytes(pw, c)));
 
 
         /*
@@ -90,6 +91,8 @@ public class PasswordStrength {
         char[] pw = password.toCharArray();
         int[] out = new int[pw.length]; // todo: size
 
+        StringBuilder sb = new StringBuilder();
+
         for (int i = 0; i < pw.length; i++) {
             out[i] = (int) pw[i];
 
@@ -112,10 +115,38 @@ public class PasswordStrength {
                 }
                 out[i] += complexity.offsetSpecialchars();
             }
-            System.out.println(out[i]);
+
+            String t = BigInteger.valueOf(out[i]).toString(2);
+            for (int j = 0; j < 7 - t.length(); j++) { // need 7 bits
+                sb.append(0);
+            }
+            sb.append(t);
         }
 
-        return new byte[0];
+
+
+        int l = sb.length();
+
+        int fill = Math.floorMod(l,8);
+
+        // leading one that is trimmed
+        StringBuilder fillSB = new StringBuilder("00000001");
+
+        // fill to byte
+        for (int j = 0; j < fill; j++) {
+            fillSB.append(0);
+        }
+
+        // System.out.println("sb=" + fillSB.toString() + sb.toString());
+
+        // would trim all leading zeros so see leading one
+        byte[] num = new BigInteger(fillSB.toString() + sb.toString(),2).toByteArray();
+        
+        // trim the one
+        byte[] outB = new byte[num.length - 1];
+        System.arraycopy(num,1,outB,0,outB.length);
+
+        return outB;
     }
 
     /**
