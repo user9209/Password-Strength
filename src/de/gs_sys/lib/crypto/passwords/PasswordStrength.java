@@ -18,8 +18,8 @@ public class PasswordStrength {
 	 */
     public static void main(String[] args) {
 
-        String password = "AZaz09!#446d4gd56fgd";
-        // String password = "AZaz0946d4gd56fgd";
+        //String password = "AZaz09!#446d4gd56fgd";
+        String password = "AZaz0946ddf4gd56fgd";
 
         Complexity c = complexity(password);
 
@@ -29,16 +29,18 @@ public class PasswordStrength {
         System.out.println(Arrays.toString(pw));
 
         System.out.println();
-        System.out.println("Filled " + ((pw.length * 8) - c.getBit()) + " bit.");
+
         if(c.hasSpecialchars()) {
+            System.out.println("Filled " + (int) Math.ceil((pw.length * 8) - password.length() * 6.3f) + " bit.");
             System.out.println("As special chars involved, this number can be very high as each char waste 0.7 bit.");
             System.out.println("Here ~ " + (int) (c.getLength() * 0.7d) + " bits");
             System.out.println("Without special chars only 0.05 bit wasted.");
         }
         else {
+            System.out.println("Filled " + (int) Math.ceil((pw.length * 8) - password.length() * 5.95f) + " bit.");
             System.out.println("Without special chars only 0.05 bit wasted for each char.");
         }
-        System.out.println("May be filled up to 7 bits once.");
+        System.out.println("May be filled up to 7 bits one time.");
 
         /*
             // ~128 bit
