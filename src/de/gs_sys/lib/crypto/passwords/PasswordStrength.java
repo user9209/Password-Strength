@@ -42,15 +42,22 @@ public class PasswordStrength {
         }
         System.out.println("May be filled up to 7 bits one time.");
 
+        // test remove chars
+
+        String demo = "§~09";
+        System.out.println(Arrays.toString(passwordToBytes(demo)));
+
         /*
             // ~128 bit
-            // (A-Za-z0-9 + 10 special chars)
-            System.out.println(bitStrength(72,21));
             // (A-Za-z0-9)
             System.out.println(bitStrength(62,22));
+            // (A-Za-z0-9 + 17 special chars)
+            System.out.println(bitStrength(79,21));
 
             // ~ 256 bit (A-Za-z0-9)
             System.out.println(bitStrength(62,43));
+            // (A-Za-z0-9 + 17 special chars)
+            System.out.println(bitStrength(79,41));
         */
     }
 
@@ -101,12 +108,26 @@ public class PasswordStrength {
         return complexity;
     }
 
+    public static byte[] passwordToBytes(String password) {
+        return passwordToBytes(password, null);
+    }
+
     /**
      * Not working yet, currently printing the position of pos^x of 79^x
      * @param password
      * @return
      */
-    private static byte[] passwordToBytes(String password, Complexity complexity) {
+    public static byte[] passwordToBytes(String password, Complexity complexity) {
+
+        if(password == null || password.isEmpty())
+            return new byte[0];
+
+        password = password.replaceAll("[^A-Za-z0-9" + SPECIALCHARS_REGEX + "]" ,"");
+
+        if(complexity == null) {
+            complexity = complexity(password);
+        }
+
         char[] pw = password.toCharArray();
         int[] out = new int[pw.length]; // todo: size
 
@@ -117,22 +138,27 @@ public class PasswordStrength {
         for (int i = 0; i < pw.length; i++) {
             out[i] = (int) pw[i];
 
+            // Numbers
             if(out[i] > 47 && out[i] < 58)
             {
                 out[i] -= 48 - complexity.offsetNumbers();
-            } else if(out[i] > 64 && out[i] < 91)
+            }
+            // A-Z
+            else if(out[i] > 64 && out[i] < 91)
             {
                 out[i] -= 65 - complexity.offsetUppercase();
             }
+            // a-z
             else if(out[i] > 96 && out[i] < 123)
             {
                 out[i] -= 97 - complexity.offsetLowercase();
             }
+            // special chars
             else {
                 out[i] = lookup(pw[i]);
                 if(out[i] == -1)
                 {
-                    throw new RuntimeException("Unknown " + pw[i]);//Todo: handle
+                    throw new RuntimeException("Unknown " + pw[i]); //Todo: handle
                 }
                 out[i] += complexity.offsetSpecialchars();
             }
