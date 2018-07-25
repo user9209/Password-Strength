@@ -30,7 +30,7 @@ public class Complexity {
         this.numbers = true;
     }
 
-    public void setSpecialcahrs()  {
+    public void setSpecialcahrs() {
         this.specialchars = true;
     }
 
@@ -39,7 +39,7 @@ public class Complexity {
     }
 
     public int offsetLowercase() {
-       return offsetUppercase() + (uppercase ? 26 : 0) ;
+        return offsetUppercase() + (uppercase ? 26 : 0);
     }
 
     public int offsetNumbers() {
@@ -47,7 +47,7 @@ public class Complexity {
     }
 
     public int offsetSpecialchars() {
-        return offsetNumbers() + (numbers? 10 : 0); //+ (specialchars ? SPECIALCHARS.length() : 0);
+        return offsetNumbers() + (numbers ? 10 : 0); //+ (specialchars ? SPECIALCHARS.length() : 0);
     }
 
     @Override
