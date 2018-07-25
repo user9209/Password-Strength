@@ -21,18 +21,18 @@ public class PasswordStrength {
         //String password = "AZaz09!#446d4gd56fgd";
         String password = "AZaz0946ddf4gd56fgd";
 
-        if (args[0] != null)
+        if (args.length == 1)
             password = args[0];
         else
             System.out.println("Using demo mode '" + password + "'!\n" +
-                               "The first parameter will taken as password in the cli.");
+                               "The first parameter will taken as password in the cli.\n");
 
         Complexity c = complexity(password);
 
         System.out.println(c);
 
         byte[] pw = passwordToBytes(password, c);
-        System.out.println(Arrays.toString(pw));
+        System.out.println("Password as array: " + Arrays.toString(pw));
 
         System.out.println();
 
