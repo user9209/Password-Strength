@@ -13,6 +13,12 @@ import static de.gs_sys.lib.crypto.passwords.Complexity.SPECIALCHARS_REGEX;
 
 public class PasswordStrength {
 
+    private static boolean cli = true;
+
+    public static void setCli(boolean cli) {
+        PasswordStrength.cli = cli;
+    }
+
     /**
      * Demo Main
      */
@@ -103,8 +109,10 @@ public class PasswordStrength {
         complexity.setLength(password.length());
         complexity.setBit(bitStrength(chars, complexity.getLength()));
 
-        System.out.print(chars + " chars ^ " + complexity.getLength() + " length \u2248 ");
-        System.out.println(complexity.getBit() + " bit");
+        if(PasswordStrength.cli) {
+            System.out.print(chars + " chars ^ " + complexity.getLength() + " length \u2248 ");
+            System.out.println(complexity.getBit() + " bit");
+        }
 
         return complexity;
     }

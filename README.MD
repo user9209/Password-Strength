@@ -18,3 +18,10 @@ password in the binary system and its bit strength.
    - 41 chars ≈ 256 bit
 
 As you can see special chars do not help much.
+
+## Version Releases
+- **Version 0.1**
+   - cli only
+- **Version 0.2**
+   - GUI JavaFX added
+
