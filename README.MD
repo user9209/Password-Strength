@@ -25,3 +25,18 @@ As you can see special chars do not help much.
 - **Version 0.2**
    - GUI JavaFX added
 
+## Pre-View
+
+As you can see to **use** this tool, your password **must** be chosen **randomly !!!**
+
+This tool is to designed to check **randomly chosen passwords** on there complexity.
+
+This password is hacked in < 1 second and does not need to test 62 bit **!**
+
+Bad password:
+
+![Screenshot bad password](doc/screenshot.png)
+
+Good password:
+
+![Screenshot good password](doc/screenshot2.png)
